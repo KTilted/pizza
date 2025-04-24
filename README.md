@@ -51,7 +51,7 @@
 ---
 
 ### 🇺🇸 **English Version**  
-**Pizza** is an esoteric programming language inspired by Brainfuck, but with Cyrillic commands and chaotic "pizza mechanics".  
+**Пицца** is an esoteric programming language inspired by Brainfuck, but with Cyrillic commands and chaotic "pizza mechanics".  
 
 #### 🔹 **Features**  
 - **Cyrillic commands** (`п`, `и`, `ц`, `а`, `с`, `т`, `з`, `к`).  
