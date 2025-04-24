@@ -90,7 +90,7 @@ void interpret_pizza(const char* code) {
             if (cells[ptr] == 0) {
                 // Пропускаем цикл
                 int nesting = 1;
-                pc += 2;
+                pc += 2; // Перемещаемся после символа 'с'
                 while (nesting > 0 && pc < code_len) {
                     if (code[pc] == '\xD1' && code[pc + 1] == '\x81') { // с
                         nesting++;
@@ -107,24 +107,25 @@ void interpret_pizza(const char* code) {
             } else {
                 // Сохраняем позицию начала цикла
                 if (loop_stack_top + 1 >= MAX_LOOP_NESTING) {
-                    fprintf(stderr, "Ошибка: слишком много вложенных циклов\n");
+                    fprintf(stderr, "ERR: Too much nested cycles\n");
                     exit(1);
                 }
                 loop_stack[++loop_stack_top] = pc;
-                pc += 2;
+                pc += 2; // Перемещаемся после символа 'с'
             }
         } else if (code[pc] == '\xD1' && code[pc + 1] == '\x82') { // т
             if (loop_stack_top < 0) {
-                fprintf(stderr, "Ошибка: лишняя закрывающая скобка 'т' на позиции %zu\n", pc);
+                fprintf(stderr, "ERR: Extra closing bracket 'т' in %zu\n", pc);
                 exit(1);
             }
             if (cells[ptr] != 0) {
                 // Возвращаемся к началу цикла
                 pc = loop_stack[loop_stack_top];
+                pc += 2; // я добавил вот это
             } else {
                 // Выходим из цикла
                 loop_stack_top--;
-                pc += 2;
+                pc += 2; // Перемещаемся после символа 'т'
             }
         } else if (code[pc] == '\xD0' && code[pc + 1] == '\xB7') { // з
             if (ptr + 1 < MEMORY_SIZE) {
