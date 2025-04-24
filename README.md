@@ -11,7 +11,7 @@
 #### 🔹 **Установка**  
 1. **Через Homebrew**:  
    ```bash
-   brew tap ktilted/pizza && brew install pizza
+   brew tap ktilted/homebrew-pizza && brew install pizza
    ```  
 2. **Вручную**:  
    Скачайте [релиз](https://github.com/ktilted/pizza/releases) и добавьте `pizza` в `PATH`.  
