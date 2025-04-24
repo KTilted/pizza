@@ -17,6 +17,7 @@
    Скачайте [релиз](https://github.com/ktilted/pizza/releases) и:
 
    2.1. Добавьте `pizza` в `PATH` (macOS, Linux)
+
    2.2. Воспользуйтесь установщиком (Windows)  
 
 #### 🔹 **Примеры**  
@@ -70,6 +71,7 @@
    Download the [release](https://github.com/ktilted/pizza/releases) and:
 
    2.1. Add `pizza` to `PATH` (macOS, Linux)
+
    2.2. Use the installation wizard (Windows)
 
 #### 🔹 **Examples**  
