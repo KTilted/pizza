@@ -12,9 +12,13 @@
 1. **Через Homebrew**:  
    ```bash
    brew tap ktilted/homebrew-pizza && brew install pizza
-   ```  
+   ```
 2. **Вручную**:  
-   Скачайте [релиз](https://github.com/ktilted/pizza/releases) и добавьте `pizza` в `PATH`.  
+   Скачайте [релиз](https://github.com/ktilted/pizza/releases) и:
+
+   2.1. Добавьте `pizza` в `PATH` (macOS, Linux)
+
+   2.2. Воспользуйтесь установщиком (Windows)  
 
 #### 🔹 **Примеры**  
 1. **Вывод «HELLO WORLD»**:  
@@ -64,7 +68,11 @@
    brew tap ktilted/pizza && brew install pizza
    ```  
 2. **Manual**:  
-   Download the [release](https://github.com/ktilted/pizza/releases) and add `pizza` to `PATH`.  
+   Download the [release](https://github.com/ktilted/pizza/releases) and:
+
+   2.1. Add `pizza` to `PATH` (macOS, Linux)
+
+   2.2. Use the installation wizard (Windows)
 
 #### 🔹 **Examples**  
 1. **Print "HELLO WORLD"**:  
