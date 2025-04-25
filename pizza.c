@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -10,6 +11,17 @@
 // Максимальная вложенность циклов
 #define MAX_LOOP_NESTING 1000
 
+bool silentOutput = false;
+
+// Функция для вывода справки
+void print_usage(const char* program_name) {
+    fprintf(stderr, "Usage: %s [args] [file/code]\n\n"
+                   "    -h: Outputs this text.\n"
+                   "    -e: Execute given Пицца code.\n"
+                   "    -s: Silent output. Only errors will be output.\n"
+                   "    Arguments can be combined (except -h).\n", program_name);
+}
+
 // Функция для чтения файла с кодом на "Пицце"
 char* read_file(const char* filename) {
     FILE* file = fopen(filename, "r");
@@ -18,6 +30,11 @@ char* read_file(const char* filename) {
         exit(1);
     }
     char* code = malloc(MAX_CODE_SIZE);
+    if (!code) {
+        fprintf(stderr, "ERR: Memory allocation failed\n");
+        fclose(file);
+        exit(1);
+    }
     size_t i = 0;
     int c;
     while ((c = fgetc(file)) != EOF && i < MAX_CODE_SIZE - 1) {
@@ -121,7 +138,6 @@ void interpret_pizza(const char* code) {
             if (cells[ptr] != 0) {
                 // Возвращаемся к началу цикла
                 pc = loop_stack[loop_stack_top];
-                pc += 2; // я добавил вот это
             } else {
                 // Выходим из цикла
                 loop_stack_top--;
@@ -141,7 +157,9 @@ void interpret_pizza(const char* code) {
             pizza_chaos(cells, MEMORY_SIZE);
             pc += 4;
         } else {
-            fprintf(stderr, "WRN: Ignoring unknown symbol on %zu\n", pc);
+            if (!silentOutput) {
+                fprintf(stderr, "WRN: Ignoring unknown symbol on %zu\n", pc);
+            }
             pc++;
         }
     }
@@ -152,23 +170,65 @@ void interpret_pizza(const char* code) {
     }
 }
 
-int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: %s pizza_code.pizza\n", argv[0]);
-        return 1;
-    }
-
+void run_pizza_code(char* pizza_code) {
     // Инициализация генератора случайных чисел
     srand(time(NULL));
-
-    // Чтение кода на "Пицце"
-    char* pizza_code = read_file(argv[1]);
 
     // Выполнение программы
     interpret_pizza(pizza_code);
 
     // Освобождение памяти
     free(pizza_code);
+}
 
+int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        print_usage(argv[0]);
+        return 1;
+    }
+
+    bool execute_code = false;
+    silentOutput = false;
+    int arg_index = 1;
+
+    // Обработка флагов
+    if (argc >= 2 && argv[1][0] == '-') {
+        if (strcmp(argv[1], "-h") == 0) {
+            print_usage(argv[0]);
+            return 0;
+        }
+        for (int i = 1; argv[1][i] != '\0'; i++) {
+            if (argv[1][i] == 'e') {
+                execute_code = true;
+            } else if (argv[1][i] == 's') {
+                silentOutput = true;
+            } else {
+                fprintf(stderr, "ERR: Unknown flag '%c'\n", argv[1][i]);
+                print_usage(argv[0]);
+                return 1;
+            }
+        }
+        arg_index++;
+    }
+
+    // Проверяем, есть ли файл или код
+    if (arg_index >= argc) {
+        print_usage(argv[0]);
+        return 1;
+    }
+
+    // Чтение или выполнение кода
+    char* pizza_code;
+    if (execute_code) {
+        pizza_code = strdup(argv[arg_index]);
+        if (!pizza_code) {
+            fprintf(stderr, "ERR: Memory allocation failed\n");
+            return 1;
+        }
+    } else {
+        pizza_code = read_file(argv[arg_index]);
+    }
+
+    run_pizza_code(pizza_code);
     return 0;
 }
